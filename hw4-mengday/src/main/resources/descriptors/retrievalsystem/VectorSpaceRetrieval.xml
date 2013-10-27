@@ -25,7 +25,8 @@
       <fixedFlow>
         <node>DocumentReader</node>
         <node>DocumentVectorAnnotator</node>
-        </fixedFlow>
+        <node>RetrievalEvaluator</node>
+      </fixedFlow>
     </flowConstraints>
     <fsIndexCollection/>
     <capabilities>

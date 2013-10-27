@@ -1,7 +1,14 @@
 package edu.cmu.lti.f13.hw4.hw4_mengday.utils;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 
 import org.apache.uima.jcas.JCas;
@@ -15,7 +22,46 @@ import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.uimafit.util.JCasUtil;
 
+
 public class Utils {
+
+  /**
+   * Find stop words in a document.
+   * @author Mengda Yang
+   *
+   */
+  public static class StopwordFilter{
+    private HashSet<String> StopwordDictionary = null;
+    public StopwordFilter(){
+      try {
+        URL url = getClass().getResource("/stopwords.txt");
+        File file = new File(url.toURI());
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        StopwordDictionary = new HashSet<String>();
+        String sLine = null;
+        while ((sLine = br.readLine()) != null)   {
+          StopwordDictionary.add(sLine);
+        }
+        br.close();
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    };
+    
+    public Boolean isStopword(String s){
+      if(StopwordDictionary.contains(s)) return true;
+      return false;
+    }
+  }
+  private static StopwordFilter filter = null;
+  
+  public static StopwordFilter GetStopWordFilter(){
+    if(Utils.filter == null){
+      Utils.filter = new StopwordFilter();
+    }
+    
+    return filter;
+  }
 	public static <T extends TOP> ArrayList<T> fromFSListToCollection(FSList list,
 			Class<T> classType) {
 
